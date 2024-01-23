@@ -81,6 +81,15 @@
     <!-- Whether the dots will be drawn when using the lockscreen pattern -->
     <string name="lockpattern_settings_enable_dots_title">Show pattern dots</string>
 
+    <!-- Refresh rate -->
+    <string name="refresh_rate_title">Refresh rate</string>
+    <string name="refresh_rate_summary_vrr_off">%d Hz</string>
+    <string name="refresh_rate_summary_vrr_on">%d Hz (Adaptive)</string>
+    <string name="refresh_rate_vrr_title">Adaptive refresh rate</string>
+    <string name="refresh_rate_vrr_summary">Automatically lower the refresh rate when the display is idle, to save power. May cause flickering or color shift on certain displays</string>
+    <string name="refresh_rate_footer">A higher refresh rate makes the display smoother, but increases power consumption</string>
+    <string name="keywords_refresh_rate">refresh, rate, smooth, peak, 60hz, 90hz, 120hz, 144hz, 165hz</string>
+
     <!-- Message shown in fingerprint enrollment dialog to locate the sensor -->
     <string name="fingerprint_enroll_find_sensor_message_front" product="tablet">Locate the fingerprint sensor on the front of your tablet.</string>
     <string name="fingerprint_enroll_find_sensor_message_front" product="device">Locate the fingerprint sensor on the front of your device.</string>
