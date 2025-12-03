@@ -3216,6 +3216,8 @@
     <string name="firmware_version">Android version</string>
     <!-- About phone screen, status item label  [CHAR LIMIT=60] -->
     <string name="security_patch">Android security update</string>
+    <!-- About phone screen, device name label  [CHAR LIMIT=40] -->
+    <string name="about_device_name">Device name</string>
     <!-- About phone screen, status item label  [CHAR LIMIT=40] -->
     <string name="model_info">Model</string>
     <!-- Label for device's platform revision value [CHAR LIMIT=40] -->
@@ -7929,7 +7931,7 @@
     <string name="keywords_esim_eid">eid</string>
     <string name="keywords_model_and_hardware">serial number, hardware version, Platform revision, Total RAM</string>
     <string name="keywords_battery_info">battery info, manufacture date, cycle count, first use</string>
-    <string name="keywords_android_version">android security patch level, baseband version, kernel version</string>
+    <string name="keywords_android_version">android security patch level,Device name, baseband version, kernel version</string>
     <!-- Search keywords for dark mode settings [CHAR LIMIT=NONE] -->
     <string name="keywords_dark_ui_mode">theme, light, dark, mode, light sensitivity, photophobia, make darker, darken, dark mode, migraine</string>
 
