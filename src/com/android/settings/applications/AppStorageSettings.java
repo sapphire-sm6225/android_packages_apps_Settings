@@ -206,14 +206,10 @@ public class AppStorageSettings extends AppInfoWithHeader
 
     @VisibleForTesting
     void handleClearDataClick() {
-        handleClearDataClick(false);
-    }
-
-    private void handleClearDataClick(boolean ignoreAppActivity) {
         if (mAppsControlDisallowedAdmin != null && !mAppsControlDisallowedBySystem) {
             RestrictedLockUtils.sendShowAdminSupportDetailsIntent(
                     getActivity(), mAppsControlDisallowedAdmin);
-        } else if (!ignoreAppActivity && mAppEntry.info.manageSpaceActivityName != null) {
+        } else if (mAppEntry.info.manageSpaceActivityName != null) {
             if (!Utils.isMonkeyRunning()) {
                 Intent intent = new Intent(Intent.ACTION_DEFAULT);
                 intent.setClassName(mAppEntry.info.packageName,
@@ -299,7 +295,15 @@ public class AppStorageSettings extends AppInfoWithHeader
                 (mAppEntry.info.flags & (FLAG_SYSTEM | FLAG_ALLOW_CLEAR_USER_DATA)) == FLAG_SYSTEM;
         final boolean appRestrictsClearingData = isNonClearableSystemApp || appHasActiveAdmins;
 
-        if (appRestrictsClearingData) {
+        final Intent intent = new Intent(Intent.ACTION_DEFAULT);
+        if (appHasSpaceManagementUI) {
+            intent.setClassName(mAppEntry.info.packageName, mAppEntry.info.manageSpaceActivityName);
+        }
+        final boolean isManageSpaceActivityAvailable =
+                getPackageManager().resolveActivity(intent, 0) != null;
+
+        if ((!appHasSpaceManagementUI && appRestrictsClearingData)
+                || !isManageSpaceActivityAvailable) {
             mButtonsPref
                     .setButton1Text(R.string.clear_user_data_text)
                     .setButton1Icon(R.drawable.ic_settings_delete)
@@ -308,25 +312,11 @@ public class AppStorageSettings extends AppInfoWithHeader
         } else {
             mButtonsPref.setButton1Text(R.string.clear_user_data_text);
             mButtonsPref.setButton1Icon(R.drawable.ic_settings_delete)
-                    .setButton1OnClickListener(v -> handleClearDataClick(true));
-        }
-
-        if (appHasSpaceManagementUI) {
-            final Intent intent = new Intent(Intent.ACTION_DEFAULT);
-            intent.setClassName(mAppEntry.info.packageName, mAppEntry.info.manageSpaceActivityName);
-            final boolean isManageSpaceActivityAvailable = getPackageManager().resolveActivity(intent, 0) != null;
-
-            if (isManageSpaceActivityAvailable) {
-                ActionButtonsPreference bp = mButtonsPref;
-                bp.setButton3Text(R.string.automatic_storage_manager_settings);
-                bp.setButton3Icon(R.drawable.ic_settings_open);
-                bp.setButton3OnClickListener(v -> handleClearDataClick(false));
-            }
+                    .setButton1OnClickListener(v -> handleClearDataClick());
         }
 
         if (mAppsControlDisallowedBySystem || AppUtils.isMainlineModule(mPm, mPackageName)) {
             mButtonsPref.setButton1Enabled(false);
-            mButtonsPref.setButton3Enabled(false);
         }
     }
 
@@ -581,7 +571,7 @@ public class AppStorageSettings extends AppInfoWithHeader
                 mButtonsPref.setButton1Enabled(false);
             } else {
                 mButtonsPref.setButton1Enabled(true)
-                        .setButton1OnClickListener(v -> handleClearDataClick(true));
+                        .setButton1OnClickListener(v -> handleClearDataClick());
             }
             if (cacheSize <= 0 || mCacheCleared) {
                 mButtonsPref.setButton2Enabled(false);
